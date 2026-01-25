@@ -224,6 +224,22 @@
             font-size: 0.6rem;
         }
 
+        /* Week watermark */
+        .watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 30vh;
+            font-weight: 800;
+            color: #94a3b8;
+            opacity: 0.15;
+            pointer-events: none;
+            user-select: none;
+            z-index: 10;
+            line-height: 1;
+        }
+
         /* Current week indicator */
         .current-week-indicator {
             background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 50%, #e0e7ff 100%);
@@ -248,6 +264,81 @@
         .current-week-indicator i {
             font-size: 1rem;
             color: #3b82f6;
+        }
+
+        /* === STATISTICS PANEL === */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+        
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px;
+            background: var(--bg-body);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+        
+        .stat-icon-big {
+            width: 52px;
+            height: 52px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+        
+        .stat-icon-big.blue {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            color: #1e40af;
+        }
+        
+        .stat-icon-big.orange {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            color: #b45309;
+        }
+        
+        .stat-icon-big.green {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            color: #065f46;
+        }
+        
+        .stat-icon-big.pink {
+            background: linear-gradient(135deg, #fce7f3, #fbcfe8);
+            color: #9f1239;
+        }
+        
+        .stat-icon-big.purple {
+            background: linear-gradient(135deg, #ede9fe, #ddd6fe);
+            color: #6b21a8;
+        }
+        
+        .stat-icon-big.teal {
+            background: linear-gradient(135deg, #ccfbf1, #99f6e4);
+            color: #115e59;
+        }
+        
+        .stat-info {
+            flex: 1;
+        }
+        
+        .stat-big-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text-main);
+            line-height: 1;
+        }
+        
+        .stat-big-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 4px;
         }
 
         /* === NAV TABS === */
@@ -402,6 +493,19 @@
             background: #dcfce7; 
             color: #16a34a; 
         }
+        
+        .pending-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            font-size: 1.2rem;
+            animation: pendingPulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pendingPulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
 
         /* Card Content */
         .l-header {
@@ -436,6 +540,21 @@
             line-height: 1.35;
             margin-bottom: 12px;
             color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .note-indicator {
+            color: #3b82f6;
+            font-size: 1.1rem;
+            animation: pulse 2s ease-in-out infinite;
+            flex-shrink: 0;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
         }
         
         /* === WINDOW SLOT STYLES === */
@@ -659,6 +778,33 @@
             transform: translateY(0); 
         }
         
+        /* Request card styles */
+        .request-change-grid {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .request-arrow {
+            color: var(--primary);
+            font-size: 1.2rem;
+            text-align: center;
+        }
+        
+        @media (max-width: 600px) {
+            .request-change-grid {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+            
+            .request-arrow {
+                transform: rotate(90deg);
+                font-size: 1rem;
+            }
+        }
+        
         @media(min-width: 600px) {
             .modal-overlay { 
                 align-items: center; 
@@ -870,6 +1016,45 @@
             border-top: 1px solid var(--border);
         }
         
+        /* === EDIT TABS === */
+        .edit-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--border);
+        }
+        
+        .edit-tab {
+            flex: 1;
+            padding: 10px 16px;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: -2px;
+        }
+        
+        .edit-tab:hover {
+            color: var(--primary);
+        }
+        
+        .edit-tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+        
+        .edit-tab-content {
+            display: none;
+        }
+        
+        .edit-tab-content.active {
+            display: block;
+        }
+        
         /* === CUSTOM ALERT MODAL === */
         .modal-box {
             background: white;
@@ -919,6 +1104,58 @@
         /* Варіанти перенесення */
         .variant-list {
             margin-top: 16px;
+        }
+        
+        /* === EDIT FORM STYLES === */
+        .modal-body {
+            padding: 20px 24px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
+        
+        .form-label i {
+            color: var(--primary);
+            font-size: 0.85rem;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
+            background: white;
+            color: #0f172a;  /* Темніший колір тексту */
+        }
+        
+        .form-input::placeholder {
+            color: #94a3b8;  /* Світліший placeholder */
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        textarea.form-input {
+            resize: vertical;
+            min-height: 80px;
+            line-height: 1.6;  /* Краща читабельність */
         }
 
         .variant-option {
@@ -1164,8 +1401,32 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
+        body.dark-mode .watermark {
+            color: #475569;
+            opacity: 0.10;
+        }
+        
         body.dark-mode .current-week-indicator i {
             color: white;
+        }
+        
+        body.dark-mode .stat-item {
+            background: #0f172a;
+            border-color: #334155;
+        }
+        
+        body.dark-mode .modal-box {
+            background: var(--bg-card);
+        }
+        
+        body.dark-mode .form-input {
+            background: #0f172a;
+            border-color: #334155;
+            color: #f1f5f9;
+        }
+        
+        body.dark-mode .form-input::placeholder {
+            color: #64748b;
         }
         
         body.dark-mode .variant-option {
@@ -1199,6 +1460,7 @@
     </style>
 </head>
 <body>
+    <div id="weekWatermark" class="watermark" aria-hidden="true"></div>
 
     <header>
         <div class="header-row">
@@ -1209,6 +1471,13 @@
                 <div class="header-dropdown" id="teacherDropdown"></div>
             </div>
             <div class="header-actions">
+                <button class="btn-icon" id="requestsBtn" onclick="openRequestsModal()" title="Мої заявки">
+                    <i class="fa-solid fa-clipboard-list"></i>
+                    <span class="badge" id="requestsBadgeHeader" style="display:none;"></span>
+                </button>
+                <button class="btn-icon" id="statsBtn" onclick="openStatsModal()" title="Статистика">
+                    <i class="fa-solid fa-chart-simple"></i>
+                </button>
                 <button class="btn-icon" id="themeToggle" onclick="toggleTheme()">
                     <i class="fa-solid fa-moon" id="themeIcon"></i>
                 </button>
@@ -1226,18 +1495,6 @@
     </div>
 
     <div class="controls-area">
-        <div class="nav-tabs">
-            <button class="nav-tab active" id="navSchedule" onclick="switchTab('schedule')">
-                <i class="fa-solid fa-calendar-days"></i>
-                <span>Розклад</span>
-            </button>
-            <button class="nav-tab" id="navRequests" onclick="switchTab('requests')">
-                <i class="fa-solid fa-clipboard-list"></i>
-                <span>Заявки</span>
-                <span class="badge" id="requestsBadge" style="display:none;"></span>
-            </button>
-        </div>
-
         <div class="week-toggle">
             <button class="week-btn active" id="btnWeek1" onclick="setWeek(1)">I тиждень</button>
             <button class="week-btn" id="btnWeek2" onclick="setWeek(2)">II тиждень</button>
@@ -1249,14 +1506,6 @@
         <div class="empty-state">
             <i class="fa-solid fa-cloud-arrow-down"></i>
             <p>Завантажуємо дані...</p>
-        </div>
-    </div>
-
-    <!-- Requests View -->
-    <div id="requestsContainer" class="requests-container" style="display:none;">
-        <div class="empty-state">
-            <i class="fa-solid fa-inbox"></i>
-            <p>У вас немає заявок</p>
         </div>
     </div>
 
@@ -1285,16 +1534,147 @@
         </div>
     </div>
 
+    <!-- Modal для деталей пари -->
+    <div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this) closeDetailsModal()">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">Деталі пари</div>
+                <button class="btn-close" onclick="closeDetailsModal()">&times;</button>
+            </div>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <!-- Modal для редагування пари -->
+    <div class="modal-overlay" id="editModal" onclick="if(event.target===this) closeEditModal()">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">Редагування пари</div>
+                <button class="btn-close" onclick="closeEditModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="editLessonInfo" style="margin-bottom: 20px; padding: 12px; background: #f8fafc; border-radius: 10px; font-size: 0.9rem;"></div>
+                
+                <!-- Вкладки -->
+                <div class="edit-tabs">
+                    <button class="edit-tab active" onclick="switchEditTab('note')">📝 Примітка</button>
+                    <button class="edit-tab" onclick="switchEditTab('workshop')">📍 Місце проведення</button>
+                </div>
+                
+                <!-- Вкладка: Примітка -->
+                <div id="editTabNote" class="edit-tab-content active">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fa-solid fa-circle-info"></i>
+                            Додаткова інформація
+                        </label>
+                        <textarea id="editNote" class="form-input" rows="6" placeholder="Введіть будь-яку додаткову інформацію: коментарі, посилання на Zoom/Moodle, завдання тощо..."></textarea>
+                        <div style="margin-top: 6px; font-size: 0.85rem; color: var(--text-muted);">
+                            💡 Посилання автоматично стануть клікабельними
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Вкладка: Практикум -->
+                <div id="editTabWorkshop" class="edit-tab-content">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fa-solid fa-door-open"></i>
+                            Практикум
+                        </label>
+                        <select id="editWorkshop" class="form-input">
+                            <option value="">Завантаження...</option>
+                        </select>
+                        <div id="workshopWarning" style="display: none; margin-top: 8px; padding: 10px; background: #fef3c7; border-left: 3px solid #f59e0b; border-radius: 6px; font-size: 0.85rem;">
+                            <strong>⚠️ Увага!</strong>
+                            <div id="workshopWarningText"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeEditModal()">Скасувати</button>
+                <button class="btn btn-primary" onclick="saveEditedLesson()">Зберегти</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Modal -->
+    <div class="modal-overlay" id="statsModal" onclick="if(event.target===this) closeStatsModal()">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">📊 Статистика навантаження</div>
+                <button class="btn-close" onclick="closeStatsModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-icon-big blue">
+                            <i class="fa-solid fa-book-open"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-big-value" id="modalStatWeek1">0</div>
+                            <div class="stat-big-label">Пар на I тижні</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-item">
+                        <div class="stat-icon-big orange">
+                            <i class="fa-solid fa-book"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-big-value" id="modalStatWeek2">0</div>
+                            <div class="stat-big-label">Пар на II тижні</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-item">
+                        <div class="stat-icon-big green">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-big-value" id="modalStatGroups">0</div>
+                            <div class="stat-big-label">Різних груп</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-item">
+                        <div class="stat-icon-big pink">
+                            <i class="fa-solid fa-mug-hot"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-big-value" id="modalStatWindows">0</div>
+                            <div class="stat-big-label">Вікон (поточний тиждень)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Custom Alert/Confirm Modal -->
     <div class="modal-overlay" id="customAlertModal">
         <div class="modal-box" style="max-width: 450px; animation: modalBounce 0.3s ease;">
             <div id="customAlertIcon" style="text-align: center; font-size: 48px; margin: 20px 0 10px 0;">
                 <i class="fa-solid fa-circle-info" style="color: #3b82f6;"></i>
             </div>
-            <div class="modal-header" id="customAlertTitle" style="text-align: center; font-size: 20px; padding: 10px 20px;">Повідомлення</div>
-            <div style="padding: 10px 30px 30px 30px; text-align: center; font-size: 15px; line-height: 1.6; color: #475569; white-space: pre-line;" id="customAlertMessage"></div>
+            <div class="modal-header" id="customAlertTitle" style="text-align: center; font-size: 20px; padding: 10px 20px; color: var(--text-main);">Повідомлення</div>
+            <div style="padding: 10px 30px 30px 30px; text-align: center; font-size: 15px; line-height: 1.6; color: var(--text-main); white-space: pre-line;" id="customAlertMessage"></div>
             <div class="modal-actions" id="customAlertActions" style="gap: 10px; padding: 0 20px 20px 20px;">
                 <button class="btn btn-primary" onclick="closeCustomAlert(true)" style="min-width: 100px;">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Requests Modal -->
+    <div class="modal-overlay" id="requestsModal" onclick="if(event.target===this) closeRequestsModal()">
+        <div class="modal" style="max-width: 700px;">
+            <div class="modal-header">
+                <div class="modal-title">📋 Мої заявки на перенесення</div>
+                <button class="btn-close" onclick="closeRequestsModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="requestsList"></div>
             </div>
         </div>
     </div>
@@ -1420,9 +1800,15 @@
         let allData = null;
         let selectedTeacher = localStorage.getItem('selectedTeacher') || null;
         let currentWeek = 1;
-        let currentTab = 'schedule';
         let currentLesson = null;
         let selectedVariant = null;
+        let editingLesson = null; // Пара що редагується
+        
+        // Touch tracking for swipe gestures
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let touchEndX = 0;
+        let touchEndY = 0;
         
         // Move mode state
         let moveMode = {
@@ -1438,13 +1824,14 @@
         async function init() {
             await fetchSchedule();
             setupEventListeners();
+            initSwipeGestures();
             
             if (selectedTeacher) {
                 document.getElementById('headerTeacher').textContent = selectedTeacher;
             }
             
             renderSchedule();
-            renderRequests();
+            updateRequestsBadge();
             
             // Auto-refresh every 5 minutes
             setInterval(() => fetchSchedule(false), 5 * 60 * 1000);
@@ -1491,11 +1878,7 @@
                     // Update requests badge
                     updateRequestsBadge();
                     
-                    if (currentTab === 'schedule') {
-                        renderSchedule();
-                    } else {
-                        renderRequests();
-                    }
+                    renderSchedule();
                 }
             } catch (error) {
                 console.error('Error fetching schedule:', error);
@@ -1550,10 +1933,8 @@
         function setWeek(week) {
             currentWeek = week;
             updateWeekButtons();
-            
-            if (currentTab === 'schedule') {
-                renderSchedule();
-            }
+            updateWeekWatermark();
+            renderSchedule();
         }
 
         function updateWeekButtons() {
@@ -1582,30 +1963,293 @@
                 
                 indicator.style.display = 'flex';
             }
+            
+            updateWeekWatermark();
+        }
+        
+        // Update week watermark
+        function updateWeekWatermark() {
+            const wm = document.getElementById('weekWatermark');
+            if (wm && currentWeek) {
+                wm.textContent = currentWeek.toString();
+            }
+        }
+
+        // ==========================================
+        // SWIPE GESTURES
+        // ==========================================
+        
+        // Handle swipe gesture
+        function handleSwipe() {
+            const diffX = touchEndX - touchStartX;
+            const diffY = touchEndY - touchStartY;
+            
+            // Check if it's a vertical scroll (ignore if scrolling)
+            if (Math.abs(diffY) > Math.abs(diffX)) {
+                return; // User is scrolling vertically, not swiping
+            }
+            
+            // Check threshold (minimum 50px swipe)
+            if (Math.abs(diffX) < 50) {
+                return; // Swipe too small
+            }
+            
+            // Swipe left (←) → switch to Week 2
+            if (diffX < 0 && currentWeek === 1) {
+                setWeek(2);
+            }
+            // Swipe right (→) → switch to Week 1
+            else if (diffX > 0 && currentWeek === 2) {
+                setWeek(1);
+            }
+        }
+        
+        // Initialize swipe gesture listeners
+        function initSwipeGestures() {
+            document.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+                touchStartY = e.changedTouches[0].screenY;
+            }, { passive: true });
+            
+            document.addEventListener('touchend', (e) => {
+                touchEndX = e.changedTouches[0].screenX;
+                touchEndY = e.changedTouches[0].screenY;
+                handleSwipe();
+            }, { passive: true });
         }
 
         // ==========================================
         // TAB SWITCHING
         // ==========================================
         
-        function switchTab(tab) {
-            currentTab = tab;
-            
-            document.getElementById('navSchedule').classList.toggle('active', tab === 'schedule');
-            document.getElementById('navRequests').classList.toggle('active', tab === 'requests');
-            
-            document.getElementById('scheduleContainer').style.display = tab === 'schedule' ? 'block' : 'none';
-            document.getElementById('requestsContainer').style.display = tab === 'requests' ? 'block' : 'none';
-            
-            if (tab === 'schedule') {
-                renderSchedule();
-            } else {
-                renderRequests();
-            }
-        }
-
         // ==========================================
         // SCHEDULE RENDERING
+        // ==========================================
+        
+        // ==========================================
+        // STATISTICS
+        // ==========================================
+        
+        function updateStatistics() {
+            if (!selectedTeacher || !allData) {
+                return;
+            }
+            
+            const allLessons = allData.live.lessons.filter(l => 
+                l.teacher === selectedTeacher || l.teacher2 === selectedTeacher
+            );
+            
+            if (allLessons.length === 0) {
+                return;
+            }
+            
+            // Рахуємо пари по тижнях
+            const week1Lessons = allLessons.filter(l => l.week === 1);
+            const week2Lessons = allLessons.filter(l => l.week === 2);
+            
+            // Рахуємо унікальні групи
+            const uniqueGroups = new Set();
+            allLessons.forEach(l => uniqueGroups.add(l.group));
+            
+            // Рахуємо вікна (для поточного тижня)
+            const currentWeekLessons = allLessons.filter(l => l.week === currentWeek);
+            let windowsCount = 0;
+            
+            // Групуємо по днях
+            const byDay = {};
+            currentWeekLessons.forEach(lesson => {
+                const dayName = typeof lesson.day === 'number' ? DAYS_MAP[lesson.day] : lesson.day;
+                if (!byDay[dayName]) byDay[dayName] = [];
+                byDay[dayName].push(lesson);
+            });
+            
+            // Рахуємо вікна в кожному дні
+            Object.keys(byDay).forEach(day => {
+                if (day === 'Субота' || day === 'Неділя') return;
+                
+                const dayLessons = byDay[day].sort((a, b) => a.slot - b.slot);
+                if (dayLessons.length === 0) return;
+                
+                const firstSlot = dayLessons[0].slot;
+                const lastSlot = dayLessons[dayLessons.length - 1].slot;
+                
+                // Вікна між першою і останньою парою
+                for (let slot = firstSlot; slot <= lastSlot; slot++) {
+                    const hasLesson = dayLessons.some(l => l.slot === slot);
+                    if (!hasLesson) {
+                        windowsCount++;
+                    }
+                }
+            });
+            
+            // Зберігаємо дані в глобальній змінній
+            window.statsData = {
+                week1: week1Lessons.length,
+                week2: week2Lessons.length,
+                groups: uniqueGroups.size,
+                windows: windowsCount
+            };
+        }
+        
+        function openStatsModal() {
+            if (!window.statsData) {
+                updateStatistics();
+            }
+            
+            if (!window.statsData) {
+                customAlert('Немає даних для відображення статистики', 'Інформація', 'info');
+                return;
+            }
+            
+            // Оновлюємо значення в модальному вікні
+            document.getElementById('modalStatWeek1').textContent = window.statsData.week1;
+            document.getElementById('modalStatWeek2').textContent = window.statsData.week2;
+            document.getElementById('modalStatGroups').textContent = window.statsData.groups;
+            document.getElementById('modalStatWindows').textContent = window.statsData.windows;
+            
+            // Показуємо модальне вікно
+            document.getElementById('statsModal').classList.add('open');
+        }
+        
+        function closeStatsModal() {
+            document.getElementById('statsModal').classList.remove('open');
+        }
+        
+        // ==========================================
+        // REQUESTS MANAGEMENT
+        // ==========================================
+        
+        function checkPendingRequest(lessonId) {
+            if (!allData || !allData.requests) return false;
+            
+            const hasPending = allData.requests.some(r => {
+                const status = (r.status || '').toLowerCase();
+                return r.lesson_id === lessonId && 
+                       r.teacher === selectedTeacher &&
+                       status === 'pending';
+            });
+            
+            return hasPending;
+        }
+        
+        function openRequestsModal() {
+            if (!allData || !allData.requests) {
+                document.getElementById('requestsList').innerHTML = `
+                    <div class="empty-state">
+                        <i class="fa-solid fa-inbox"></i>
+                        <p>У вас немає заявок</p>
+                    </div>
+                `;
+                document.getElementById('requestsModal').classList.add('open');
+                return;
+            }
+            
+            const myRequests = allData.requests.filter(r => r.teacher === selectedTeacher);
+            
+            if (myRequests.length === 0) {
+                document.getElementById('requestsList').innerHTML = `
+                    <div class="empty-state">
+                        <i class="fa-solid fa-inbox"></i>
+                        <p>У вас немає заявок</p>
+                    </div>
+                `;
+            } else {
+                const requestsHtml = myRequests.map(req => {
+                    const lesson = allData.live.lessons.find(l => l.id === req.lesson_id);
+                    if (!lesson) {
+                        console.warn('Lesson not found for request:', req.lesson_id);
+                        return '';
+                    }
+                    
+                    // Нормалізуємо status до lowercase
+                    const status = (req.status || '').toLowerCase();
+                    
+                    const statusIcons = {
+                        'pending': '⏳',
+                        'approved': '✅',
+                        'rejected': '❌'
+                    };
+                    
+                    const statusTexts = {
+                        'pending': 'Очікує розгляду',
+                        'approved': 'Схвалено',
+                        'rejected': 'Відхилено'
+                    };
+                    
+                    const statusColors = {
+                        'pending': '#f59e0b',
+                        'approved': '#22c55e',
+                        'rejected': '#ef4444'
+                    };
+                    
+                    const origDay = typeof lesson.day === 'number' ? DAYS_MAP[lesson.day] : lesson.day;
+                    const origSlot = getTimeSlot(lesson.day, lesson.slot);
+                    
+                    const variant = req.variants && req.variants[0];
+                    const newDay = variant ? (typeof variant.day === 'number' ? DAYS_MAP[variant.day] : variant.day) : '';
+                    const newSlot = variant ? getTimeSlot(variant.day, variant.slot) : null;
+                    
+                    return `
+                        <div class="request-card" style="margin-bottom: 16px; padding: 16px; background: var(--bg-body); border-radius: 12px; border-left: 4px solid ${statusColors[status]};">
+                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
+                                <div>
+                                    <div style="font-weight: 700; font-size: 1.05rem; margin-bottom: 4px; color: var(--text-main);">${lesson.subject}</div>
+                                    <div style="color: var(--text-muted); font-size: 0.9rem;">${lesson.group}</div>
+                                </div>
+                                <div style="font-size: 1.5rem;">${statusIcons[status]}</div>
+                            </div>
+                            <div class="request-change-grid">
+                                <div style="padding: 10px; background: var(--bg-card); border-radius: 8px; border: 1px solid var(--border);">
+                                    <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px;">Було:</div>
+                                    <div style="font-weight: 600; color: var(--text-main);">${origDay}</div>
+                                    <div style="font-size: 0.9rem; color: var(--text-main);">${lesson.slot} пара • ${origSlot.time}</div>
+                                </div>
+                                <div class="request-arrow">→</div>
+                                <div style="padding: 10px; background: var(--bg-card); border-radius: 8px; border: 1px solid var(--border);">
+                                    <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px;">Запропоновано:</div>
+                                    <div style="font-weight: 600; color: var(--text-main);">${newDay}</div>
+                                    <div style="font-size: 0.9rem; color: var(--text-main);">${variant.slot} пара • ${newSlot.time}</div>
+                                </div>
+                            </div>
+                            <div style="padding: 8px 12px; background: ${statusColors[status]}15; border-radius: 6px; text-align: center; font-weight: 600; color: ${statusColors[status]};">
+                                ${statusTexts[status]}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                
+                document.getElementById('requestsList').innerHTML = requestsHtml;
+            }
+            
+            // Оновлюємо badge
+            updateRequestsBadge();
+            
+            document.getElementById('requestsModal').classList.add('open');
+        }
+        
+        function closeRequestsModal() {
+            document.getElementById('requestsModal').classList.remove('open');
+        }
+        
+        function updateRequestsBadge() {
+            if (!allData || !allData.requests) return;
+            
+            const pendingCount = allData.requests.filter(r => {
+                const status = (r.status || '').toLowerCase();
+                return r.teacher === selectedTeacher && status === 'pending';
+            }).length;
+            
+            const badge = document.getElementById('requestsBadgeHeader');
+            if (pendingCount > 0) {
+                badge.textContent = pendingCount;
+                badge.style.display = 'flex';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+        
+        // ==========================================
+        // RENDER SCHEDULE
         // ==========================================
         
         function renderSchedule() {
@@ -1718,6 +2362,9 @@
                     </div>
                 `;
             }).join('');
+            
+            // Оновлюємо статистику
+            updateStatistics();
         }
         
         function renderWindowSlot(day, slotNum, isToday) {
@@ -1754,14 +2401,25 @@
             
             const timeSlot = getTimeSlot(lesson.day, lesson.slot);
             
+            // Індикатор коментаря
+            const noteIndicator = lesson.note ? '<i class="fa-solid fa-circle-info note-indicator" title="Є додаткова інформація"></i>' : '';
+            
+            // Перевіряємо чи є pending заявка на цю пару
+            const hasPendingRequest = checkPendingRequest(lesson.id);
+            const pendingBadge = hasPendingRequest ? '<span class="pending-badge" title="Очікує розгляду перенесення">⏳</span>' : '';
+            
             return `
                 <div class="lesson-card type-${typeClass} ${isNow ? 'is-now' : ''}" onclick="showLessonDetails('${lesson.id}')">
                     ${statusBadge}
+                    ${pendingBadge}
                     <div class="l-header">
                         <div class="l-num">${lesson.slot}</div>
                         <div class="l-time">${timeSlot.start} - ${timeSlot.end}</div>
                     </div>
-                    <div class="l-subject">${lesson.subject}</div>
+                    <div class="l-subject">
+                        ${lesson.subject}
+                        ${noteIndicator}
+                    </div>
                     <div class="l-footer">
                         <div class="l-details">
                             <div class="l-row">
@@ -1782,9 +2440,9 @@
                         <div class="type-tag">${lesson.type}</div>
                     </div>
                     <div class="l-actions">
-                        <button class="btn-action" onclick="event.stopPropagation(); showLessonDetails('${lesson.id}')">
-                            <i class="fa-solid fa-info-circle"></i>
-                            Деталі
+                        <button class="btn-action" onclick="event.stopPropagation(); openEditModal('${lesson.id}')">
+                            <i class="fa-solid fa-pen"></i>
+                            Редагувати
                         </button>
                         <button class="btn-action primary" onclick="event.stopPropagation(); startMoveMode('${lesson.id}')">
                             <i class="fa-solid fa-arrows-rotate"></i>
@@ -1860,14 +2518,24 @@
                 </div>
                 ${lesson.note ? `
                     <div class="m-row">
-                        <div class="m-label">Примітка</div>
-                        <div class="m-value">${lesson.note}</div>
+                        <div class="m-label"><i class="fa-solid fa-circle-info"></i> Додаткова інформація</div>
+                        <div class="m-value" style="white-space: pre-wrap; line-height: 1.6;">${linkify(lesson.note)}</div>
                     </div>
                 ` : ''}
             `;
             
             document.getElementById('modalContent').innerHTML = content;
             document.getElementById('modalOverlay').classList.add('open');
+        }
+        
+        // Функція для перетворення URL в клікабельні посилання
+        function linkify(text) {
+            const urlRegex = /(https?:\/\/[^\s]+)/g;
+            return text.replace(urlRegex, '<a href="$1" target="_blank" style="color: var(--primary); text-decoration: underline;">$1</a>');
+        }
+        
+        function closeDetailsModal() {
+            document.getElementById('modalOverlay').classList.remove('open');
         }
 
         // ==========================================
@@ -1919,7 +2587,7 @@
                 const result = await response.json();
                 
                 if (result.result === 'success') {
-                    await customAlert('Заявку успішно надіслано!', 'Успіх', 'success');
+                    await customAlert('Заявку успішно надіслано!', 'Успішно', 'success');
                     closeModal();
                     await fetchSchedule(false);
                 } else {
@@ -1942,102 +2610,6 @@
         // REQUESTS RENDERING
         // ==========================================
         
-        function renderRequests() {
-            const container = document.getElementById('requestsContainer');
-            
-            if (!selectedTeacher) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fa-solid fa-user-slash"></i>
-                        <p>Оберіть викладача зі списку вгорі</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            const requests = getTeacherRequests();
-            
-            if (requests.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fa-solid fa-inbox"></i>
-                        <p>У вас немає заявок</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            // Sort by timestamp (newest first)
-            requests.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-            
-            container.innerHTML = requests.map(request => {
-                const statusText = {
-                    'PENDING': 'Очікує',
-                    'APPROVED': 'Схвалено',
-                    'REJECTED': 'Відхилено'
-                }[request.status] || request.status;
-                
-                return `
-                    <div class="request-card">
-                        <div class="request-status ${request.status.toLowerCase()}">${statusText}</div>
-                        <div class="request-info">${request.info}</div>
-                        ${formatRequestChange(request)}
-                        <div class="request-time">
-                            ${new Date(request.timestamp).toLocaleString('uk-UA', {
-                                day: 'numeric',
-                                month: 'long',
-                                hour: '2-digit',
-                                minute: '2-digit'
-                            })}
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function formatRequestChange(request) {
-            if (!request.original || !request.variants || request.variants.length === 0) {
-                return '';
-            }
-            
-            const orig = request.original;
-            const variant = request.variants[0];
-            
-            const origTime = getTimeSlot(orig.day, orig.slot);
-            const newTime = getTimeSlot(variant.day, variant.slot);
-            
-            const origDay = typeof orig.day === 'number' ? DAYS_MAP[orig.day] : orig.day;
-            const variantDay = typeof variant.day === 'number' ? DAYS_MAP[variant.day] : variant.day;
-            
-            return `
-                <div class="request-change">
-                    Перенесення з <strong>${origDay}, ${origTime.time}</strong>
-                    на <strong>${variantDay}, ${newTime.time}</strong>
-                </div>
-            `;
-        }
-
-        function getTeacherRequests() {
-            if (!allData || !selectedTeacher) return [];
-            
-            return allData.requests.filter(request => 
-                request.teacher === selectedTeacher
-            );
-        }
-
-        function updateRequestsBadge() {
-            const requests = getTeacherRequests();
-            const pendingCount = requests.filter(r => r.status === 'PENDING').length;
-            const badge = document.getElementById('requestsBadge');
-            
-            if (pendingCount > 0) {
-                badge.textContent = pendingCount;
-                badge.style.display = 'block';
-            } else {
-                badge.style.display = 'none';
-            }
-        }
-
         // ==========================================
         // MOVE MODE WITH CONFLICT VISUALIZATION
         // ==========================================
@@ -2195,7 +2767,7 @@
                 const result = await response.json();
                 
                 if (result.result === 'success') {
-                    await customAlert('Заявку успішно надіслано!', 'Успіх', 'success');
+                    await customAlert('Заявку успішно надіслано!', 'Успішно', 'success');
                     cancelMoveMode();
                     await fetchSchedule(false);
                 } else {
@@ -2212,6 +2784,219 @@
             moveMode.lesson = null;
             moveMode.targetWeek = 1;
             document.getElementById('moveModal').classList.remove('open');
+        }
+        
+        // ==========================================
+        // EDIT LESSON
+        // ==========================================
+        
+        function openEditModal(lessonId) {
+            const lesson = allData.live.lessons.find(l => l.id === lessonId);
+            if (!lesson) return;
+            
+            editingLesson = lesson;
+            
+            // Показуємо інформацію про пару
+            const dayName = typeof lesson.day === 'number' ? DAYS_MAP[lesson.day] : lesson.day;
+            const timeSlot = getTimeSlot(lesson.day, lesson.slot);
+            const weekRoman = lesson.week === 1 ? 'I' : 'II';
+            
+            document.getElementById('editLessonInfo').innerHTML = `
+                <div style="font-weight: 600; margin-bottom: 4px;">${lesson.subject} • ${lesson.type}</div>
+                <div style="color: var(--text-muted);">
+                    ${lesson.group} • ${dayName}, ${timeSlot.time} • ${weekRoman} тиждень
+                </div>
+            `;
+            
+            // Заповнюємо форму існуючими даними
+            document.getElementById('editNote').value = lesson.note || '';
+            
+            // Завантажуємо практикуми для вкладки "Деталі"
+            loadWorkshopsForEdit(lesson);
+            
+            // Скидаємо на першу вкладку
+            switchEditTab('note');
+            
+            // Показуємо модальне вікно
+            document.getElementById('editModal').classList.add('open');
+        }
+        
+        function switchEditTab(tab) {
+            // Перемикаємо активну вкладку
+            document.querySelectorAll('.edit-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.edit-tab-content').forEach(c => c.classList.remove('active'));
+            
+            if (tab === 'note') {
+                document.querySelector('.edit-tab:nth-child(1)').classList.add('active');
+                document.getElementById('editTabNote').classList.add('active');
+            } else if (tab === 'workshop') {
+                document.querySelector('.edit-tab:nth-child(2)').classList.add('active');
+                document.getElementById('editTabWorkshop').classList.add('active');
+            }
+        }
+        
+        function loadWorkshopsForEdit(lesson) {
+            const select = document.getElementById('editWorkshop');
+            const warning = document.getElementById('workshopWarning');
+            
+            select.disabled = false;
+            
+            // Знаходимо кафедру викладача через departmentcode пари або через Teachers
+            let teacherDeptCode = lesson.departmentcode || lesson.departmentCode;
+            
+            if (!teacherDeptCode) {
+                // Шукаємо через Teachers
+                const teacherData = allData.live.teachers?.find(t => t.name === selectedTeacher);
+                if (teacherData) {
+                    teacherDeptCode = teacherData.departmentCode;
+                }
+            }
+            
+            if (!teacherDeptCode) {
+                select.innerHTML = '<option value="">Не вдалося визначити кафедру викладача</option>';
+                select.disabled = true;
+                return;
+            }
+            
+            // Перевіряємо чи аудиторія належить кафедрі
+            const currentRoomOnDept = (allData.live.workshops || []).some(w => 
+                w.name === lesson.room && w.departmentCode === teacherDeptCode
+            );
+            
+            // Дозволяємо міняти тільки якщо:
+            // 1. Практична/Лабораторна (будь-яка аудиторія)
+            // 2. Лекція на кафедрі (аудиторія належить кафедрі)
+            const canEdit = (lesson.type === 'Практична' || lesson.type === 'Лабораторна') || 
+                           (lesson.type === 'Лекція' && currentRoomOnDept);
+            
+            if (!canEdit) {
+                select.innerHTML = '<option value="">Зміна практикуму доступна для практичних/лабораторних або лекцій на кафедрі</option>';
+                select.disabled = true;
+                warning.style.display = 'none';
+                return;
+            }
+            
+            // Фільтруємо практикуми по кафедрі
+            const deptWorkshops = (allData.live.workshops || []).filter(w => w.departmentCode === teacherDeptCode);
+            
+            if (deptWorkshops.length === 0) {
+                select.innerHTML = '<option value="">Немає доступних практикумів на кафедрі</option>';
+                select.disabled = true;
+                return;
+            }
+            
+            // Формуємо список з перевіркою доступності
+            select.innerHTML = deptWorkshops.map(w => {
+                const isBusy = checkWorkshopBusy(w.name, lesson);
+                const current = lesson.room === w.name;
+                
+                return `<option value="${w.name}" ${current ? 'selected' : ''} data-busy="${isBusy ? 'true' : 'false'}">
+                    ${w.name} ${current ? '(поточний)' : ''} ${isBusy ? '⚠️ зайнято' : '✅'}
+                </option>`;
+            }).join('');
+            
+            // Обробник зміни
+            select.onchange = () => {
+                const selectedOption = select.options[select.selectedIndex];
+                const isBusy = selectedOption.getAttribute('data-busy') === 'true';
+                
+                if (isBusy && lesson.room !== select.value) {
+                    const conflictInfo = getWorkshopConflict(select.value, lesson);
+                    document.getElementById('workshopWarningText').innerHTML = conflictInfo;
+                    warning.style.display = 'block';
+                } else {
+                    warning.style.display = 'none';
+                }
+            };
+        }
+        
+        function checkWorkshopBusy(workshopName, currentLesson) {
+            // Перевіряємо чи є інша пара в цей же час в цьому практикумі
+            return allData.live.lessons.some(l => 
+                l.id !== currentLesson.id &&
+                l.room === workshopName &&
+                l.day === currentLesson.day &&
+                l.slot === currentLesson.slot &&
+                l.week === currentLesson.week
+            );
+        }
+        
+        function getWorkshopConflict(workshopName, currentLesson) {
+            const conflict = allData.live.lessons.find(l => 
+                l.id !== currentLesson.id &&
+                l.room === workshopName &&
+                l.day === currentLesson.day &&
+                l.slot === currentLesson.slot &&
+                l.week === currentLesson.week
+            );
+            
+            if (conflict) {
+                return `Практикум <strong>${workshopName}</strong> зайнятий:<br>${conflict.subject} (${conflict.group}, ${conflict.teacher})`;
+            }
+            return '';
+        }
+        
+        function closeEditModal() {
+            editingLesson = null;
+            document.getElementById('editModal').classList.remove('open');
+        }
+        
+        async function saveEditedLesson() {
+            if (!editingLesson) return;
+            
+            const noteValue = document.getElementById('editNote').value.trim();
+            const workshopSelect = document.getElementById('editWorkshop');
+            const newWorkshop = workshopSelect.disabled ? null : workshopSelect.value;
+            
+            // Перевіряємо чи є попередження про конфлікт
+            const warning = document.getElementById('workshopWarning');
+            if (warning.style.display === 'block' && newWorkshop && newWorkshop !== editingLesson.room) {
+                const confirmed = await customConfirm(
+                    'Обраний практикум зайнятий іншою парою. Все одно змінити?',
+                    'Підтвердження',
+                    'Так, змінити',
+                    'Скасувати'
+                );
+                
+                if (!confirmed) return;
+            }
+            
+            // Оновлюємо пару локально
+            const lesson = allData.live.lessons.find(l => l.id === editingLesson.id);
+            if (lesson) {
+                lesson.note = noteValue;
+                if (newWorkshop && newWorkshop !== editingLesson.room) {
+                    lesson.room = newWorkshop;
+                }
+            }
+            
+            // Відправляємо весь розклад на сервер (як в admin.html)
+            const requestData = {
+                action: 'admin_save',
+                data: {
+                    lessons: allData.live.lessons
+                }
+            };
+            
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(requestData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.result === 'success') {
+                    await customAlert('Інформацію успішно збережено!', 'Успішно', 'success');
+                    closeEditModal();
+                    renderSchedule(); // Оновлюємо відображення
+                } else {
+                    await customAlert('Помилка: ' + (result.message || 'Невідома помилка'), 'Помилка', 'error');
+                }
+            } catch (error) {
+                console.error('Error saving lesson info:', error);
+                await customAlert('Помилка збереження даних', 'Помилка', 'error');
+            }
         }
         
         // ==========================================
