@@ -170,6 +170,94 @@
             flex: 1;
         }
         
+        /* Group Search Input */
+        .group-search-container {
+            position: relative;
+            flex: 1;
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            pointer-events: none;
+        }
+        
+        .group-search-input {
+            width: 100%;
+            padding: 12px 16px 12px 36px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--bg-card);
+            color: var(--text-main);
+            font-size: 0.95rem;
+            font-weight: 600;
+            outline: none;
+            transition: all 0.2s;
+            box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
+        }
+        
+        .group-search-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .group-search-input::placeholder {
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        
+        /* Search Dropdown */
+        .search-dropdown {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            right: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 100;
+            display: none;
+        }
+        
+        .search-dropdown.open {
+            display: block;
+        }
+        
+        .search-dropdown-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-main);
+            font-weight: 500;
+        }
+        
+        .search-dropdown-item:last-child {
+            border-bottom: none;
+        }
+        
+        .search-dropdown-item:hover {
+            background: #f1f5f9;
+        }
+        
+        .search-dropdown-item.highlighted {
+            background: rgba(59, 130, 246, 0.1);
+        }
+        
+        .search-dropdown-empty {
+            padding: 20px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
         .btn-save-group {
             width: 44px;
             height: 44px;
@@ -210,29 +298,23 @@
             border-color: #fbbf24;
         }
         
-        select {
-            width: 100%;
-            appearance: none;
+        body.dark-mode .group-search-input {
             background: var(--bg-card);
-            border: 1px solid var(--border);
-            padding: 12px 16px;
-            border-radius: 12px;
-            font-size: 0.95rem;
-            font-family: inherit;
+            border-color: var(--border);
             color: var(--text-main);
-            font-weight: 600;
-            box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
-            outline: none;
         }
         
-        .select-icon {
-            position: absolute;
-            right: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-            pointer-events: none;
-            font-size: 0.8rem;
+        body.dark-mode .search-dropdown {
+            background: var(--bg-card);
+            border-color: var(--border);
+        }
+        
+        body.dark-mode .search-dropdown-item:hover {
+            background: #334155;
+        }
+        
+        body.dark-mode .search-dropdown-item.highlighted {
+            background: rgba(59, 130, 246, 0.2);
         }
 
         .week-toggle {
@@ -959,10 +1041,17 @@
 
     <div class="controls-area">
         <div class="select-wrapper">
-            <select id="groupSelect" onchange="onGroupChange()">
-                <option value="" disabled selected>Завантаження груп...</option>
-            </select>
-            <i class="fa-solid fa-chevron-down select-icon"></i>
+            <div class="group-search-container">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input 
+                    type="text" 
+                    id="groupSearch" 
+                    class="group-search-input" 
+                    placeholder="Пошук групи..."
+                    autocomplete="off"
+                />
+                <div class="search-dropdown" id="searchDropdown"></div>
+            </div>
             <button class="btn-save-group" id="saveGroupBtn" onclick="toggleSaveGroup()" title="Зберегти групу">
                 <i class="fa-regular fa-star" id="saveGroupIcon"></i>
             </button>
@@ -997,7 +1086,7 @@
         // ==========================================
         
         // Google Apps Script URL (same as student_schedule.html)
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzQUuhJBNGr6jHiWUejpddE_le9On7elq2FKic4UYexHtWtA36PkAlvZEIqNaWfGAPZZA/exec'; 
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwKP28EdQ0ITuuTx_DIjqg_PTDaESguiHv8Qujx0b2HHnRlfyC2l5iB1B9TxReoMud4Xw/exec'; 
 
         // ==========================================
 
@@ -1036,6 +1125,10 @@
         let actualCurrentWeek = 1; // Real current week from backend (for highlighting)
         let selectedGroup = '';
         let savedGroups = [];
+        
+        // Variables for smart group search
+        let allGroupsList = [];
+        let highlightedIndex = -1;
         
         // Touch tracking for swipe gestures
         let touchStartX = 0;
@@ -1200,10 +1293,11 @@
             selectedGroup = group;
             saveLastViewedGroup();
             
-            // Update select dropdown
-            const select = document.getElementById('groupSelect');
-            if (select) {
-                select.value = group;
+            // Update search input
+            const searchInput = document.getElementById('groupSearch');
+            if (searchInput) {
+                searchInput.value = '';
+                searchInput.placeholder = `✓ ${group}`;
             }
             
             // Close dropdown
@@ -1406,50 +1500,103 @@
             return workshop ? workshop.departmentCode : null;
         }
 
-        function populateGroupSelect() {
-            const select = document.getElementById('groupSelect');
-            const currentSelection = select.value || selectedGroup;
-            select.innerHTML = ''; 
-
-            if (!allGroups || allGroups.length === 0) {
-                select.innerHTML = '<option value="" disabled selected>Групи не знайдено</option>';
-                return;
+        function initGroupSearch() {
+            const searchInput = document.getElementById('groupSearch');
+            const dropdown = document.getElementById('searchDropdown');
+            
+            // Отримуємо список груп
+            if (allGroups && allGroups.length > 0) {
+                allGroupsList = [...allGroups].sort();
             }
-
-            const defaultOpt = document.createElement('option');
-            defaultOpt.value = "";
-            defaultOpt.text = "Оберіть групу";
-            defaultOpt.disabled = true;
-            if (!currentSelection) defaultOpt.selected = true;
-            select.appendChild(defaultOpt);
-
-            allGroups.forEach(g => {
-                const opt = document.createElement('option');
-                opt.value = g;
-                opt.textContent = g;
-                if (g === currentSelection) opt.selected = true;
-                select.appendChild(opt);
+            
+            // При введенні тексту
+            searchInput.addEventListener('input', (e) => {
+                const query = e.target.value.trim().toLowerCase();
+                highlightedIndex = -1;
+                
+                if (query.length < 1) {
+                    dropdown.classList.remove('open');
+                    return;
+                }
+                
+                // Фільтруємо групи
+                const filtered = allGroupsList.filter(name => 
+                    name.toLowerCase().includes(query)
+                );
+                
+                if (filtered.length === 0) {
+                    dropdown.innerHTML = '<div class="search-dropdown-empty">Не знайдено груп</div>';
+                    dropdown.classList.add('open');
+                } else {
+                    dropdown.innerHTML = filtered.slice(0, 10).map(name => 
+                        `<div class="search-dropdown-item" onclick="selectGroup('${name}')">${name}</div>`
+                    ).join('');
+                    dropdown.classList.add('open');
+                }
             });
             
-            if (currentSelection && !allGroups.includes(currentSelection)) {
-                select.value = "";
-                selectedGroup = "";
-            } else {
-                select.value = currentSelection;
+            // Клавіатурна навігація
+            searchInput.addEventListener('keydown', (e) => {
+                const items = dropdown.querySelectorAll('.search-dropdown-item');
+                
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    highlightedIndex = Math.min(highlightedIndex + 1, items.length - 1);
+                    updateHighlight(items);
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    highlightedIndex = Math.max(highlightedIndex - 1, 0);
+                    updateHighlight(items);
+                } else if (e.key === 'Enter' && highlightedIndex >= 0) {
+                    e.preventDefault();
+                    items[highlightedIndex].click();
+                } else if (e.key === 'Escape') {
+                    dropdown.classList.remove('open');
+                }
+            });
+            
+            // Закриття при кліку поза dropdown
+            document.addEventListener('click', (e) => {
+                if (!searchInput.contains(e.target) && !dropdown.contains(e.target)) {
+                    dropdown.classList.remove('open');
+                }
+            });
+            
+            // Якщо є збережена група - показуємо
+            if (selectedGroup) {
+                searchInput.placeholder = `✓ ${selectedGroup}`;
             }
+        }
+        
+        function updateHighlight(items) {
+            items.forEach((item, index) => {
+                item.classList.toggle('highlighted', index === highlightedIndex);
+            });
+        }
+        
+        function selectGroup(group) {
+            selectedGroup = group;
+            saveLastViewedGroup();
+            
+            const searchInput = document.getElementById('groupSearch');
+            searchInput.value = '';
+            searchInput.placeholder = `✓ ${group}`;
+            
+            document.getElementById('searchDropdown').classList.remove('open');
+            
+            updateSaveButton();
+            updateHeaderGroupName();
+            renderSchedule();
+        }
+
+        function populateGroupSelect() {
+            // Ініціалізація розумного пошуку замість select
+            initGroupSearch();
             
             // Update header and save button after populating
             updateHeaderGroupName();
             updateSaveButton();
             updateHeaderDropdown();
-        }
-
-        function onGroupChange() {
-            selectedGroup = document.getElementById('groupSelect').value;
-            saveLastViewedGroup();
-            updateSaveButton();
-            updateHeaderGroupName();
-            renderSchedule();
         }
 
         function setWeek(w) {
