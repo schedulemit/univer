@@ -396,8 +396,9 @@
             border-radius: 16px;
             padding: 16px;
             margin-bottom: 10px;
-            box-shadow: 0 2px 6px -1px rgba(0,0,0,0.06);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             position: relative;
+            border: 1px solid #e2e8f0;
             border-left: 4px solid var(--other-color);
             transition: transform 0.1s;
             cursor: pointer;
@@ -711,11 +712,11 @@
         
         /* Dark mode - Cards (matching rozklad_kaf16.html) */
         body.dark-mode .lesson-card {
-            background: linear-gradient(135deg, #1e293b 0%, #283548 100%);
+            background: #1e293b;
             border: 1px solid #334155;
             border-left-width: 4px;
             border-left-style: solid;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
         
         body.dark-mode .lesson-card.is-now {
@@ -726,22 +727,18 @@
         /* Dark mode - Class type colors and left-side neon glow */
         body.dark-mode .lesson-card.type-lect {
             border-left-color: #fb923c;
-            box-shadow: -6px 0 12px -4px #fb923c, 0 4px 8px rgba(0,0,0,0.3);
         }
         
         body.dark-mode .lesson-card.type-prac {
             border-left-color: #60a5fa;
-            box-shadow: -6px 0 12px -4px #60a5fa, 0 4px 8px rgba(0,0,0,0.3);
         }
         
         body.dark-mode .lesson-card.type-lab {
             border-left-color: #34d399;
-            box-shadow: -6px 0 12px -4px #34d399, 0 4px 8px rgba(0,0,0,0.3);
         }
         
         body.dark-mode .lesson-card.type-sem {
             border-left-color: #c084fc;
-            box-shadow: -6px 0 12px -4px #c084fc, 0 4px 8px rgba(0,0,0,0.3);
         }
         
         body.dark-mode .window-card {
