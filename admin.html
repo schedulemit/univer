@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
+    <!--
+    Система управління розкладом Університету
+    Розробник: Ігор Рамський (ramskij@gmail.com)
+    © 2026 Всі права захищені
+    -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -2675,7 +2680,7 @@
 
     <script>
         // === ВАЖЛИВО! Вставте сюди URL Вашого скрипта ===
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxlOJ8whgnqBhB6ySe6_MW_nPiid0VfyA_-uSkqIHDrJMZ6hrbFP-aB9KeBRnAsTiElxQ/exec';
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzJyFr4H4o5M_UMCuIdxKYmbCPOzJreXeCU5HLqyrOPwZbIG4xcQmc-nEi98GqoH-8c/exec';
         const ADMIN_PASSWORD = 'admin';
         
         // Кастомний alert/confirm
@@ -2866,7 +2871,7 @@
             // Рахуємо teacher requests
             if (teacherRequests && teacherRequests.length > 0) {
                 teacherRequests.forEach(request => {
-                    const deptCode = request.original?.departmentcode || 'UNKNOWN';
+                    const deptCode = request.departmentcode || request.original?.departmentcode || 'UNKNOWN';
                     counts[deptCode] = (counts[deptCode] || 0) + 1;
                 });
             }
@@ -3029,7 +3034,7 @@
                     if (requestId) {
                         const request = teacherRequests.find(r => r.id === requestId);
                         if (request && request.original) {
-                            deptCode = request.original.departmentcode || 'UNKNOWN';
+                            deptCode = request.departmentcode || request.original?.departmentcode || originalLesson.departmentcode || 'UNKNOWN';
                         }
                     }
                 }
@@ -5162,7 +5167,7 @@
                     const originalInCurrentWeek = parseInt(originalLesson.week) === parseInt(currentWeek);
                     if (originalInCurrentWeek) {
                         // Зберігаємо departmentcode для групування
-                        const deptCode = req.original?.departmentcode || originalLesson.departmentcode || 'UNKNOWN';
+                        const deptCode = req.departmentcode || req.original?.departmentcode || originalLesson.departmentcode || 'UNKNOWN';
                         
                         // Перевіряємо чи вже є ця пара в displayList
                         const existingIndex = displayList.findIndex(l => String(l.id) === String(originalLesson.id));
@@ -5193,7 +5198,7 @@
                         if (parseInt(variantWeek) !== parseInt(currentWeek)) return;
                         
                         // ВАЖЛИВО: Зберігаємо departmentcode для групування пропозицій по кафедрах
-                        const deptCode = req.original?.departmentcode || originalLesson.departmentcode || 'UNKNOWN';
+                        const deptCode = req.departmentcode || req.original?.departmentcode || originalLesson.departmentcode || 'UNKNOWN';
                         
                         const ghostLesson = {
                             ...originalLesson,
